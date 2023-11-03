@@ -21,24 +21,26 @@ V0 = 0.003
 @def ocp begin
 
     t ∈ [ t0, tf ], time
-    x ∈ R⁴, state 
+    φ ∈ R⁴, state 
     u ∈ R, control
 
     s = x₁
     p = x₂
     r = x₃
-    v = x₄
+    V = x₄
 
-    x(t0) == [ s0, p0, r0, V0 ]
+    φ(t0) == [ s0, p0, r0, V0 ]
+
+    0 ≤ u(t) ≤ 1
     
     s(t) ≥ 0
     p(t) ≥ 0
     0 ≤ r(t) ≤ 1
-    v(t) ≥ 0
+    V(t) ≥ 0
 
-    ẋ(t) == F0(x(t)) + u(t) * F1(x(t))
+    ẋ(t) == F0(φ(t)) + u(t) * F1(φ(t))
 
-    v(tf) → max
+    V(tf) → max
 
 end;
 
