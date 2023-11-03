@@ -69,7 +69,7 @@ F1 = VectorField( φ -> begin
 end )
 
 # Solving the OCP
-direct_sol = solve(ocp, grid_size=100)
+direct_sol = solve(ocp, grid_size=400)
 # Plotting the solution
 plt = plot(direct_sol, size=(600, 600))
 savefig(plt, "figures/finiteTimeHorizonOptimalControlProblem.pdf")
