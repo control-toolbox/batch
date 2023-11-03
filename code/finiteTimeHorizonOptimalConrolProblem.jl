@@ -38,11 +38,11 @@ V0 = 0.003
     0 ≤ r(t) ≤ 1
     V(t) ≥ 0
 
-    ẋ(t) == F0(φ(t)) + u(t) * F1(φ(t))
+    ϕ̇(t) == F0(φ(t)) + u(t) * F1(φ(t))
 
     V(tf) → max
 
-end;
+end
 
 # Defintions of the constants. For the moment, we use the same as in the paper, cf. [7, 27] line 202
 const kᵣ = 1.1
