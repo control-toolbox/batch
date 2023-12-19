@@ -1,0 +1,19 @@
+\contentsline {chapter}{Preface}{i}{chapter*.1}%
+\contentsline {chapter}{\numberline {1}Introduction}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Definition of the model}{2}{chapter.2}%
+\contentsline {section}{The self-replicator model}{2}{figure.caption.3}%
+\contentsline {section}{The dynamics of the self-replicator model}{3}{figure.caption.4}%
+\contentsline {chapter}{\numberline {3}A glance at optimal control theory}{5}{chapter.3}%
+\contentsline {section}{Formulation of an optimal control problem}{5}{section*.6}%
+\contentsline {section}{A simple example of an optimal control problem}{5}{section*.6}%
+\contentsline {chapter}{\numberline {4}The biomass maximisation in a finite-time horizon}{7}{chapter.4}%
+\contentsline {section}{The biomass maximisation case}{7}{AMS.8}%
+\contentsline {chapter}{\numberline {5}Computing the \textit {Lie} brackets}{10}{chapter.5}%
+\contentsline {section}{What is a \textit {Lie} bracket}{10}{section*.13}%
+\contentsline {section}{Why did we use \textit {Lie} brackets}{10}{section*.13}%
+\contentsline {section}{Computing \textit {Lie} brackets by hand}{10}{proposition.1}%
+\contentsline {section}{Using symbolic mathematics}{10}{proposition.1}%
+\contentsline {chapter}{\numberline {6}Conclusion}{13}{chapter.6}%
+\contentsline {chapter}{\numberline {A}Appendix}{14}{appendix.A}%
+\contentsline {chapter}{B\ Bibiliography}{16}{lstnumber.-2.66}%
+\contentsfinish 

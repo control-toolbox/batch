@@ -1,0 +1,142 @@
+\chapter{Appendix}
+\label{chapter:appendix}
+Here is the code we used to do the calculations on the \textit{Lie} brackets and to solve the $OCP$ in a finite-time horizon. The code does not exactly use the same syntax since symbols encoded in \verb|utf-8| that are permitted in \verb|Julia| are not allowed in the environment \verb|lstlisting|. Hence, code like \verb|t in [ t0, tf ], time| actually uses $\in$ instead of plain-text ``in''.
+
+\begin{lstlisting}
+ """This is the code 
+ for the ocp problem in 
+ a finite time horizon"""
+ using OptimalControl
+ 
+ t0 = `0`         # initial time
+ tf = `90`        # final time
+ s0 = `0.1`       # initial substrate
+ p0 = `0.001`     # initial precursors
+ r0 = `0.1`       # initial ribosomes
+ V0 = `0.003`     # initial volume
+
+ G@defG ocp begin # definition of the optimal control problem
+
+    t in [ t0, tf ], time
+    x in R^4, state 
+    u in R, control
+
+    s = x_1
+    p = x_2
+    r = x_3
+    v = x_4
+
+    GxG(t0A)A == [ s0, p0, r0, V0 ]
+    
+    GsG(tA)A >= `0`
+    GpG(tA)A >= `0`
+    `0` <= GrG(tA)A <= `1`
+    GvG(tA)A >= `0`
+    `0` <= GuG(tA)A <= `1`
+
+    Gdot_xG(tA)A == GF0G(x(t)A)A + GuG(tA)A * GF1G(x(t)A)A
+
+    GvG(tfA)A -> max
+
+ end;
+
+ # Dynamics
+ BconstB k_r = `1.1`
+ BconstB k_m = `1.2`
+ BconstB K_r = `1.3`
+ BconstB K_m = `1.4`
+
+
+ Gw_rG(pA)A = k_r * p / (K_r + pA)A
+ Gw_mG(sA)A = k_m * s / (K_m + sA)A
+
+ F0 = GVectorFieldG( phi -> begin
+    s, p, r, V = phi
+    return [ -Gw_mG(sA)A * (`1` - rA)A * V
+              Gw_mG(sA)A * (`1` - rA)A - Gw_rG(pA)A * r * (p + `1`A)A
+             -Gw_rG(pA)A * r^`2`
+              Gw_rG(pA)A * r * V ]
+ end A)A
+
+ F1 = GVectorFieldG( phi -> begin
+    s, p, r, V = phi
+    return [ `0`, `0`, Gw_rG(pA)A * r, `0` ]
+ end A)A
+
+ direct_sol1 = GsolveG(ocp, grid_size=`100`A)A
+
+ direct_sol2 = GsolveG(ocp, grid_size=`1000`A)A
+
+ plt1 = GplotG(direct_sol1, size=(`600`, `600`)A)A
+ plt2 = GplotG(direct_sol2, size=(`600`, `600`)A)A
+
+\end{lstlisting}
+
+\begin{lstlisting}
+ """Symbolic computation of Lie brackets
+ for 4x4 matrices determinants"""
+ using Symbolics
+
+ G@variablesG s, p, r, v
+ G@variablesG w_m(s), w_r(p)
+ 
+
+ F0 = [-w_m * (1-r)*v, w_m*(1-r) - w_r *r * (p+1), -w_r*r^2, w_r*r*v]
+ F1 = [`0`, `0`, w_r*r, `0`]
+ 
+ # Calcul du crochet de Lie de F0 et F1
+
+ F0_prime = Symbolics.GjacobianG(F0, [s, p, r, v]A)A
+ F1_prime = Symbolics.GjacobianG(F1, [s, p, r, v]A)A
+
+ F01 = F1_prime * F0 - F0_prime * F1
+
+ # Calcul du crochet de Lie de F1 et F01
+
+ F01_prime = Symbolics.GjacobianG(F01, [s, p, r, v])
+
+ F101 = F01_prime * F1 - F1_prime * F01
+ 
+ # Calcul du rang de la matrice F1 et F01 :
+ mat_F1_F01 = [F1 F01]
+ 
+ # Sous matrice de mat_F1_F01
+ sousDet1_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[2] mat_F1_F01[6]]
+ sousDet2_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[3] mat_F1_F01[7]]
+ sousDet3_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[4] mat_F1_F01[8]]
+ sousDet4_F1_F01 = [mat_F1_F01[2] mat_F1_F01[6] ; mat_F1_F01[3] mat_F1_F01[7]]
+ sousDet5_F1_F01 = [mat_F1_F01[2] mat_F1_F01[6] ; mat_F1_F01[4] mat_F1_F01[8]]
+ sousDet6_F1_F01 = [mat_F1_F01[3] mat_F1_F01[7] ; mat_F1_F01[4] mat_F1_F01[8]]
+ 
+ mineur1_F1_F01 = Symbolics.GdetG(sousDet1_F1_F01A)A
+ mineur2_F1_F01 = Symbolics.GdetG(sousDet2_F1_F01A)A
+ mineur3_F1_F01 = Symbolics.GdetG(sousDet3_F1_F01A)A
+ mineur4_F1_F01 = Symbolics.GdetG(sousDet4_F1_F01A)A
+ mineur5_F1_F01 = Symbolics.GdetG(sousDet5_F1_F01A)A
+ mineur6_F1_F01 = Symbolics.GdetG(sousDet6_F1_F01A)A
+ 
+ # Calcul du rang de la matrice F1 F01 et F101
+ mat_F1_F01_F101 = [F1 F01 F101]
+ 
+ # Sous matrice de mat2
+ sousDet1_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ; mat_F1_F01_F101[3]
+ mat_F1_F01_F101[7] mat_F1_F01_F101[11]]
+
+ sousDet2_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+ 
+ sousDet3_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[3] mat_F1_F01_F101[7] mat_F1_F01_F101[11] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+
+ sousDet4_F1_F01_F101 = [mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ;
+ mat_F1_F01_F101[3] mat_F1_F01_F101[7] mat_F1_F01_F101[11] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+ 
+ mineur1_F1_F01_F101 = Symbolics.GdetG(sousDet1_F1_F01_F101A)A
+ mineur2_F1_F01_F101 = Symbolics.GdetG(sousDet2_F1_F01_F101A)A
+ mineur3_F1_F01_F101 = Symbolics.GdetG(sousDet3_F1_F01_F101A)A
+ mineur4_F1_F01_F101 = Symbolics.GdetG(sousDet4_F1_F01_F101A)A
+\end{lstlisting}
