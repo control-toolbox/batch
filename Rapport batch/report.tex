@@ -55,7 +55,7 @@ in a bioreactor}
 \addcontentsline{toc}{chapter}{Preface}
 
 \emph{\indent Studying tiny life forms using resource sharing models has been a game-changer in batch bioprocessing. It helps one understand how bacteria behave naturally by figuring out how they divide their resources through smart methods. \\ \\
-\indent This report dives into batch bioprocessing but from a different angle, looking at how resources are used, since we are the one poking around in this model to see how things change over time and if they stay stable when controlling it through a mathematical theory. We have used a basic model for bacteria growth called the self-replicator model that considers what is happening inside the bioreactor. We have done numerical resolutions of $PDEs$ using Julia and tried helping Mr. Yabo in the completion of his work.\\ \\
+\indent This report dives into batch bioprocessing but from a different angle, looking at how resources are used, since we are the one poking around in this model to see how things change over time and if they stay stable when controlling it through a mathematical theory. We have used a basic model for bacteria growth called the self-replicator model that considers what is happening inside the bioreactor. We have done numerical resolutions of $ODEs$ using Julia and tried helping Mr. Yabo in the completion of his work.\\ \\
 \indent Solving complex mathematical problems were interesting as we faced several problems that taught us how real-worlds mathematical research is.}
 
 \begin{flushright}
@@ -126,7 +126,7 @@ $$w_R(p)\ \dot{=}\ \frac{k_Rp}{K_R+p}\quad \textrm{ and }\quad w_M(s) \ \dot{=}\
 \\
 At its core, optimal control involves a few key components :
 \begin{itemize}
- \item[$*$] \textbf{System dynamics }: this deals with how the system evolves over time. We usually represent it using $PDEs$.
+ \item[$*$] \textbf{System dynamics }: this deals with how the system evolves over time. We usually represent it using $ODEs$.
  \item[$*$] \textbf{Control inputs }: these are the actions one can make to influence the modifications of the system. Optimizing a criterion means to find the best control input possible.
  \item[$*$] \textbf{Objective }: this is what we want to achieve (\emph{e.g.\ maximizing a money profit, minimizing energy consumption}).
 \end{itemize}\noindent
