@@ -1,9 +1,9 @@
 using OptimalControl
 
 t0 = 0      # initial time
-tf = 30    # final time
+tf = 300    # final time
 s0 = 0.1
-p0 = 0.001
+p0 = 0.001 #0.001
 r0 = 0.1
 V0 = 0.003
 
@@ -16,19 +16,19 @@ V0 = 0.003
     s = x₁
     p = x₂
     r = x₃
-    v = x₄
+    V = x₄
 
     x(t0) == [ s0, p0, r0, V0 ]
     
     s(t) ≥ 0
     p(t) ≥ 0
     0 ≤ r(t) ≤ 1
-    v(t) ≥ 0
+    V(t) ≥ 0
     0 ≤ u(t) ≤ 1
 
     ẋ(t) == F0(x(t)) + u(t) * F1(x(t))
 
-    v(tf) → max
+    V(tf) → max
 
 end;
 
@@ -61,3 +61,4 @@ direct_sol2 = solve(ocp, grid_size=1000)
 
 plt1 = plot(direct_sol1, size=(600, 600))
 plt2 = plot(direct_sol2, size=(600, 600))
+plot(plt1, plt2, layout=(1, 2))

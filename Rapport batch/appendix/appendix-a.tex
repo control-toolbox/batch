@@ -140,3 +140,63 @@ Here is the code we used to do the calculations on the \textit{Lie} brackets and
  mineur3_F1_F01_F101 = Symbolics.GdetG(sousDet3_F1_F01_F101A)A
  mineur4_F1_F01_F101 = Symbolics.GdetG(sousDet4_F1_F01_F101A)A
 \end{lstlisting}
+\begin{lstlisting}
+ using Symbolics
+
+ G@variablesG s, p, r, v
+ G@variablesG w_m(s), w_r(p)
+
+ F0 = [-w_m * (1-r)*v, w_m*(1-r) - w_r *r * (p+1), -w_r*r^2, w_r*r*v]
+ F1 = [0, 0, w_r*r, 0]
+ 
+ F0_prime = Symbolics.GjacobianG(F0, [s, p, r, v])
+ F1_prime = Symbolics.GjacobianG(F1, [s, p, r, v])
+ F01 = F1_prime * F0 - F0_prime * F1
+ 
+ F01_prime = Symbolics.GjacobianG(F01, [s, p, r, v])
+ F101 = F01_prime * F1 - F1_prime * F01
+ 
+ mat_F1_F01 = [F1 F01]
+ sousDet1_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[2] mat_F1_F01[6]]
+
+ sousDet2_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[3] mat_F1_F01[7]]
+
+ sousDet3_F1_F01 = [mat_F1_F01[1] mat_F1_F01[5] ; mat_F1_F01[4] mat_F1_F01[8]]
+
+ sousDet4_F1_F01 = [mat_F1_F01[2] mat_F1_F01[6] ; mat_F1_F01[3] mat_F1_F01[7]]
+
+ sousDet5_F1_F01 = [mat_F1_F01[2] mat_F1_F01[6] ; mat_F1_F01[4] mat_F1_F01[8]]
+
+ sousDet6_F1_F01 = [mat_F1_F01[3] mat_F1_F01[7] ; mat_F1_F01[4] mat_F1_F01[8]]
+ 
+ mineur1_F1_F01 = Symbolics.GdetG(sousDet1_F1_F01)
+ mineur2_F1_F01 = Symbolics.GdetG(sousDet2_F1_F01)
+ mineur3_F1_F01 = Symbolics.GdetG(sousDet3_F1_F01)
+ mineur4_F1_F01 = Symbolics.GdetG(sousDet4_F1_F01)
+ mineur5_F1_F01 = Symbolics.GdetG(sousDet5_F1_F01)
+ mineur6_F1_F01 = Symbolics.GdetG(sousDet6_F1_F01)
+ 
+ mat_F1_F01_F101 = [F1 F01 F101]
+ 
+ sousDet1_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ; mat_F1_F01_F101[3]
+ mat_F1_F01_F101[7] mat_F1_F01_F101[11]]
+
+ sousDet2_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+
+ sousDet3_F1_F01_F101 = [mat_F1_F01_F101[1] mat_F1_F01_F101[5] mat_F1_F01_F101[9] ;
+ mat_F1_F01_F101[3] mat_F1_F01_F101[7] mat_F1_F01_F101[11] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+
+ sousDet4_F1_F01_F101 = [mat_F1_F01_F101[2] mat_F1_F01_F101[6] mat_F1_F01_F101[10] ;
+ mat_F1_F01_F101[3] mat_F1_F01_F101[7] mat_F1_F01_F101[11] ; mat_F1_F01_F101[4]
+ mat_F1_F01_F101[8] mat_F1_F01_F101[12]]
+ 
+ mineur1_F1_F01_F101 = Symbolics.GdetG(sousDet1_F1_F01_F101)
+ mineur2_F1_F01_F101 = Symbolics.GdetG(sousDet2_F1_F01_F101)
+ mineur3_F1_F01_F101 = Symbolics.GdetG(sousDet3_F1_F01_F101)
+ mineur4_F1_F01_F101 = Symbolics.GdetG(sousDet4_F1_F01_F101)
+\end{lstlisting}
+

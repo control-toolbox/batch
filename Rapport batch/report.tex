@@ -202,7 +202,7 @@ The simulations for an infinite time horizon being already made, we did the ones
 \includegraphics[width=\textwidth]{figures/tf_90.pdf}
 \caption*{Our numerical solutions of \eqref{eq:bmocp} with \eqref{eq:ic} $s_0 = 0.1,\, p_0 = 0.001,\, r_0=0.1,\, \mathcal{V}_0 = 0.003 $ and $t_f=90$.}
 \end{figure}
-As we can see, the control $u$ is quite similar to the one Mr. Yabo found, and so is the graph of $p$ ($x_2$). Unfortunately, this is the case for a final time $t_f=90$, but not for $t_f=30$ as Mr. Yabo set. That problem could not be figured out during the whole duration of the project since the code seems to be exact.
+As we can see, the control $u$ is quite similar to the one Mr. Yabo found, and so is the graph of $p$ ($x_2$). Unfortunately, this is the case for a final time $t_f=90$, but not for $t_f=30$ as Mr. Yabo set. That problem is most likely due to the fact that the methods used in the \verb|OptimalControl| package are not the same as the ones used by Mr. Yabo used.
 \chapter{Computing the \textit{Lie} brackets}
 \label{chapter:liebrackets}
 \addcontentsline{toc}{section}{What is a \textit{Lie} bracket}
@@ -323,7 +323,61 @@ $$ -\frac{r^3p^5k_R^5v\big(\frac{-k_Rp(1+p)}{K_R+p}-\frac{k_Ms}{K_M+s}\big)}{(K_
 To sum up what we did ; \\
 $rank(F_1\ F_{01}) = 2$ is proved, so is $rank(F_1\ F_{01}\ F_{101}) = 2$.\\
 That means propostion \ref{proposition:lie} is proved.\\
-We continued our research further and tried to see if this property was verified for any $w_M(s)$ and $w_R(p)$. The numerical results seem to show that it is true but we didn't finish the verifications by hand.
+We continued our research further and tried to see if this property was verified for any $w_M(s)$ and $w_R(p)$. The numerical results show that it is true and here are the proofs.\\
+The matrices $F_{0}$ and $F_1$ are the following
+$$ 
+F_0=\begin{pmatrix}
+ -(1-r)vw_M(s)\\
+ (1-r)w_M(s) - (1+p)rw_R(p)\\
+ -r^2w_R(p)\\
+ rvw_R(p)
+\end{pmatrix} \quad \quad \quad F_1 = 
+\begin{pmatrix}
+ 0\\
+ 0\\
+ rw_R(p)\\
+ 0
+\end{pmatrix} $$ which give us the matrices $F_{01}$ and $F_{101}$ :
+$$F_{01} =
+\begin{pmatrix}
+ -rvw_R(p)w_M(s)\\
+ -(-w_M(s)+ (-1-p)w_R(p))rw_R(p)\\
+ (w_R(p))^2r^2 + ((1-r)w_M(s)- (1+p)rw_R(p))r\frac{dw_R(p)}{dp}\\
+ -(w_R(p))^2rv
+\end{pmatrix}
+$$
+$$F_{101} =
+\begin{pmatrix}
+ -(w_R(p))^2rvw_M(s)\\
+ (w_R(p))^2(w_M(s) - (-1-p)w_R(p))r\\
+ \beta\\
+ -(w_R(p))^3rv
+\end{pmatrix}
+$$
+Where 
+\begin{align*}
+ \beta &= -\bigg((w_R(p))^2r^2 + ((1-r)w_M(s) - (1+p)rw_R(p))r\frac{dw_R(p)}{dp}\bigg)w_R(p) + \bigg(2(w_R(p))^2r \\
+ &+ ((1-r)w_M(s) + (-1-p)rw_R(p))\frac{dw_R(p)}{dp}+ (-w_M(s) + (-1-p) w_R(p))r\frac{dw_R(p)}{dp}\bigg)rw_R(p) \\
+ &+ r^2(-w_M(s) + (-1-p)w_R(p))w_R(p)\frac{dw_R(p)}{dp}
+\end{align*}
+Computing the determinants of the matrix $(F_1,\, F_{01})$ gives us the following results 
+$$0$$
+$$(w_R(p))^2r^2vw_M(s)$$
+$$0$$
+$$(w_R(p))^2r^2(-w_M(s)+(1-p)w_R(p)$$
+$$0$$
+$$-(w_R(p))^3r^2v$$
+which clearly shows that at least one of them is not null (\emph{see} \eqref{eq:ic}).\\
+\noindent
+In the end we compute the determinants of the matrix $(F_1,\, F_{01},\, F_{101})$ to find that they all are equal to $0$ :
+$$
+ -(w_R(p))^4r^3(w_M(s)-(-1-p)w_R(p))vw_M(s)-(w_R(p))^4r^3(-w_M(s)+(-1-p)w_R(p))vw_M(s)$$
+ $$0$$
+ $$0$$
+ $$-(w_R(p))^5r^3(-w_M(s)+(-1-p)w_R(p))v-(w_R(p))^5r^3(w_M(s)-(-1-p)w_R(p))v    $$
+As above in the case of defined functions, \verb|Symbolics| has trouble simplfying, yet it is again quite easy to verify that they all are equal to $0$.\\
+These results prove that the proposition  \eqref{proposition:lie} is true for any function $w_R(p)$ and $w_M(s)$.
+
 \chapter{Conclusion}
 \label{chapter:conclusion}
 This three-month duration project helped us understanding many things in the world of scientific research.\\
