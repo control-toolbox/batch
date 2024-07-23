@@ -1,5 +1,6 @@
 ## Packages
 using OptimalControl
+using NLPModelsIpopt
 using Plots
 
 ### Initial conditions
