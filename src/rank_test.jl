@@ -1,5 +1,6 @@
 # batch.jl
 using OptimalControl
+using NLPModelsIpopt
 
 const kᵣ = 1.1
 const kₘ = 1.2

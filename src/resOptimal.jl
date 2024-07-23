@@ -1,4 +1,5 @@
 using OptimalControl
+using NLPModelsIpopt
 
 t0 = 0      # initial time
 tf = 300    # final time
